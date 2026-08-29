@@ -6,7 +6,14 @@
 export const SORT_KEYS = ["newest", "price-asc", "price-desc", "title"] as const;
 export type SortKey = (typeof SORT_KEYS)[number];
 
-export const AVAILABILITY_VALUES = ["any", "available", "sold-out"] as const;
+export const AVAILABILITY_VALUES = [
+  "any",
+  "in-stock",
+  "pre-order",
+  "sold-out",
+  "tba",
+  "unknown",
+] as const;
 export type AvailabilityFilter = (typeof AVAILABILITY_VALUES)[number];
 
 export const STATUS_VALUES = ["all", "new"] as const;
@@ -56,10 +63,14 @@ function first(value: string | string[] | undefined): string {
 
 export function parseFilters(params: RawParams): ListingFilters {
   const sort = first(params.sort) as SortKey;
-  const availability = first(params.availability) as AvailabilityFilter;
+  const availabilityRaw = first(params.availability) as AvailabilityFilter;
   const status = first(params.status) as StatusFilter;
   const view = first(params.view) as ViewFilter;
   const page = Number.parseInt(first(params.page) || "1", 10);
+
+  // Links shared before the five-state model used `available`.
+  const availability: AvailabilityFilter =
+    availabilityRaw === ("available" as AvailabilityFilter) ? "in-stock" : availabilityRaw;
 
   return {
     q: first(params.q).trim().slice(0, 120),

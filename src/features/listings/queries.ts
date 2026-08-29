@@ -100,10 +100,9 @@ function buildWhere(filters: ListingFilters): WhereClause {
     params.push(filters.format);
   }
 
-  if (filters.availability === "available") {
-    clauses.push(`e.available_count > 0`);
-  } else if (filters.availability === "sold-out") {
-    clauses.push(`e.available_count = 0`);
+  if (filters.availability !== "any") {
+    clauses.push(`e.stock_state = ?`);
+    params.push(filters.availability);
   }
 
   if (filters.status === "new") {

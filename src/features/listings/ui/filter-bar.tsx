@@ -15,6 +15,7 @@ import {
   type ViewFilter,
 } from "../filters";
 import { storeName } from "@/shared/lib/stores";
+import { stockStateLabel } from "@/shared/lib/stock-state";
 import { formatDisplay } from "@/features/parse/format";
 import type { BrowseFacets } from "../queries";
 
@@ -181,11 +182,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
           >
             {AVAILABILITY_VALUES.map((a) => (
               <option key={a} value={a}>
-                {a === "any"
-                  ? "Any availability"
-                  : a === "available"
-                    ? "In stock"
-                    : "Sold out"}
+                {a === "any" ? "Any availability" : stockStateLabel(a)}
               </option>
             ))}
           </select>
