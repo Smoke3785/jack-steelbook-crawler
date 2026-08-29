@@ -6,7 +6,7 @@
     "dev": "next dev",
     "develop": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "tsx src/scripts/ingest.ts && next start",
     "lint": "eslint",
     "ingest": "tsx src/scripts/ingest.ts",
     "ingest:cron": "tsx src/scripts/ingest.ts --cron"

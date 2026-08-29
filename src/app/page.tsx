@@ -3,6 +3,7 @@ import { queryBrowse } from "@/features/listings/queries";
 import { EditionCard } from "@/features/listings/ui/edition-card";
 import { EditionRow } from "@/features/listings/ui/edition-row";
 import { FilterBar } from "@/features/listings/ui/filter-bar";
+import { JackCrawfordCard, JackCrawfordRow } from "@/features/listings/ui/jack-crawford";
 import { Pagination } from "@/features/listings/ui/pagination";
 
 export default async function HomePage({ searchParams }: PageProps<"/">) {
@@ -36,12 +37,14 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         </div>
       ) : filters.view === "list" ? (
         <div className="flex flex-col gap-2">
+          {filters.page === 1 ? <JackCrawfordRow /> : null}
           {result.items.map((edition) => (
             <EditionRow key={edition.id} edition={edition} />
           ))}
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {filters.page === 1 ? <JackCrawfordCard /> : null}
           {result.items.map((edition) => (
             <EditionCard key={edition.id} edition={edition} />
           ))}
