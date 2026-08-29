@@ -41,7 +41,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               </span>
             </Link>
 
-            <nav className="flex items-center gap-4 text-sm">
+            <nav className="flex items-center gap-6 text-sm">
+              <Link
+                className="transition-colors text-zinc-400 hover:text-zinc-100"
+                href="/"
+              >
+                Search
+              </Link>
               <Link
                 className="transition-colors text-zinc-400 hover:text-zinc-100"
                 href="/status"

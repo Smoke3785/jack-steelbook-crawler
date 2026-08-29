@@ -51,7 +51,7 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 pt-2 ">
+        <div className="flex flex-1 flex-col gap-2 pt-2 D">
           <div>
             <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-zinc-100">
               {edition.display_title}
@@ -84,9 +84,9 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
                 )}
               </span>
               <StockBadge
-                state={edition.stock_state}
                 inStock={edition.available_count}
                 total={edition.listing_count}
+                state={edition.stock_state}
               />
             </div>
 
