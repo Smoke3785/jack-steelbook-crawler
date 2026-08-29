@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "develop": "next dev",
+    "prebuild": "tsx src/scripts/migrate.ts",
     "build": "next build",
     "start": "tsx src/scripts/ingest.ts && next start",
     "lint": "eslint",
+    "db:migrate": "tsx src/scripts/migrate.ts",
     "ingest": "tsx src/scripts/ingest.ts",
     "ingest:cron": "tsx src/scripts/ingest.ts --cron"
   },

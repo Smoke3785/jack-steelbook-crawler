@@ -17,7 +17,7 @@ export interface IngestStats {
 }
 
 /** Keeps the stores table in sync with the code-level registry. */
-function syncStores(db: DB): void {
+export function syncStores(db: DB): void {
   const upsert = db.prepare(
     `INSERT INTO stores (id, name, base_url, kind, role, enabled)
      VALUES (?, ?, ?, ?, ?, ?)

@@ -1,4 +1,4 @@
-export { getDb, type DB } from "./client";
+export { getDb, openAndMigrate, type DB } from "./client";
 export type {
   StoreRow,
   IngestRunRow,

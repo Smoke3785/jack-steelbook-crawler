@@ -13,7 +13,7 @@ function resolveDbPath(): string {
 
 const migrationsDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "migrations");
 
-function applyMigrations(db: DB): void {
+function applyMigrations(db: DB): string[] {
   db.exec(`CREATE TABLE IF NOT EXISTS _migrations (
     name TEXT PRIMARY KEY,
     applied_at TEXT NOT NULL DEFAULT (datetime('now'))
@@ -29,6 +29,7 @@ function applyMigrations(db: DB): void {
     .sort();
 
   const pending = files.filter((f) => !applied.has(f));
+  const appliedNow: string[] = [];
 
   for (const file of pending) {
     const sql = fs.readFileSync(path.join(migrationsDir, file), "utf8");
@@ -38,7 +39,25 @@ function applyMigrations(db: DB): void {
     });
 
     migrate();
+    appliedNow.push(file);
   }
+
+  return appliedNow;
+}
+
+/** Opens the database, applies pending migrations, reports what changed. */
+export async function openAndMigrate(): Promise<{ db: DB; appliedMigrations: string[] }> {
+  const dbPath = resolveDbPath();
+  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+
+  const db = new Database(dbPath);
+  db.pragma("journal_mode = WAL");
+  db.pragma("busy_timeout = 5000");
+  db.pragma("foreign_keys = ON");
+
+  const appliedMigrations = applyMigrations(db);
+
+  return { db, appliedMigrations };
 }
 
 let dbPromise: Promise<DB> | null = null;
@@ -52,19 +71,7 @@ export function getDb(): Promise<DB> {
     return dbPromise;
   }
 
-  dbPromise = (async () => {
-    const dbPath = resolveDbPath();
-    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-
-    const db = new Database(dbPath);
-    db.pragma("journal_mode = WAL");
-    db.pragma("busy_timeout = 5000");
-    db.pragma("foreign_keys = ON");
-
-    applyMigrations(db);
-
-    return db;
-  })();
+  dbPromise = openAndMigrate().then(({ db }) => db);
 
   return dbPromise;
 }

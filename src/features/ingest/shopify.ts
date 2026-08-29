@@ -132,20 +132,3 @@ export async function fetchAllProducts(
 
   return all;
 }
-
-/** Fetches one product by handle — used by the edition page recheck. */
-export async function fetchProductByHandle(
-  storeId: string,
-  baseUrl: string,
-  handle: string,
-): Promise<ShopifyProduct | null> {
-  const url = `${baseUrl}/products/${encodeURIComponent(handle)}.json`;
-  const payload = await fetchJson(storeId, url);
-
-  if (typeof payload !== "object" || payload === null) {
-    return null;
-  }
-
-  const product = (payload as { product?: unknown }).product;
-  return product ? (product as ShopifyProduct) : null;
-}
