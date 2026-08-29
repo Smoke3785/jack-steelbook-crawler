@@ -19,7 +19,7 @@ import { formatDisplay } from "@/features/parse/format";
 import type { BrowseFacets } from "../queries";
 
 const SELECT_CLASS =
-  "h-9 rounded-lg border-0 bg-zinc-100 px-2.5 text-sm text-zinc-800 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500";
+  "h-9 border-0 bg-zinc-100 px-2.5 text-sm text-zinc-800 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500";
 
 interface FilterBarProps {
   filters: ListingFilters;
@@ -45,10 +45,14 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
     });
   };
 
-  /** Search commits on Enter only — typing never touches the URL. */
-  const submitQ = () => {
-    if (q !== filters.q) {
-      navigate({ q });
+  /**
+   * Search commits on Enter or the native ✕ clear — typing never touches the
+   * URL. Takes the value explicitly because the `search` event can arrive
+   * before React has re-rendered with the cleared state.
+   */
+  const commitQuery = (value: string) => {
+    if (value !== filters.q) {
+      navigate({ q: value });
     }
   };
 
@@ -69,15 +73,21 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
           className="h-9 w-full min-w-52 flex-1"
           onSubmit={(e) => {
             e.preventDefault();
-            submitQ();
+            commitQuery(q);
           }}
         >
           <input
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
+            {...{
+              // React dispatches the native `search` event (✕ clear, Enter)
+              // but its input types don't expose onSearch — hence the spread.
+              onSearch: (event: React.FormEvent<HTMLInputElement>) =>
+                commitQuery(event.currentTarget.value),
+            }}
             placeholder="Search title, catalog no., movie — press Enter"
-            className="h-9 w-full rounded-lg bg-zinc-100 px-3 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
+            className="h-9 w-full bg-zinc-100 px-3 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
           />
         </form>
 
@@ -181,7 +191,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
         <div
           role="group"
           aria-label="View"
-          className="flex h-9 items-center overflow-hidden rounded-lg ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
+          className="flex h-9 items-center overflow-hidden ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
         >
           {VIEW_VALUES.map((view, idx) => {
             const isActive = filters.view === view;
@@ -215,7 +225,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
                 router.replace("/", { scroll: false });
               })
             }
-            className="ml-auto h-9 rounded-lg px-3 text-sm font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+            className="ml-auto h-9 px-3 text-sm font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
           >
             Clear filters
           </button>

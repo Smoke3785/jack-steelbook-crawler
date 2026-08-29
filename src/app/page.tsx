@@ -33,7 +33,7 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
       </div>
 
       {result.items.length === 0 && !showJack ? (
-        <div className="rounded-xl border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
+        <div className="border border-dashed border-zinc-300 p-12 text-center dark:border-zinc-700">
           <p className="text-sm text-zinc-500 dark:text-zinc-400">
             {result.total === 0 && !filters.q
               ? "No editions indexed yet — run `npm run ingest` to pull the store feeds."
@@ -41,14 +41,14 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
           </p>
         </div>
       ) : filters.view === "list" ? (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col">
           {showJack ? <JackCrawfordRow /> : null}
           {result.items.map((edition) => (
             <EditionRow key={edition.id} edition={edition} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {showJack ? <JackCrawfordCard /> : null}
           {result.items.map((edition) => (
             <EditionCard key={edition.id} edition={edition} />

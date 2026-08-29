@@ -19,7 +19,7 @@ export function matchesJackCrawfordQuery(q: string): boolean {
 
 export function JackCrawfordCard() {
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl bg-white ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+    <div className="flex flex-col overflow-hidden bg-white ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
       <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
         <Image
           src="/jack-crawford.jpg"
@@ -51,8 +51,8 @@ export function JackCrawfordCard() {
 
 export function JackCrawfordRow() {
   return (
-    <div className="flex items-center gap-3 rounded-xl bg-white p-2.5 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
-      <div className="relative h-[72px] w-12 shrink-0 overflow-hidden rounded-md bg-zinc-100 dark:bg-zinc-800">
+    <div className="flex items-center gap-3 bg-white p-2.5 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+      <div className="relative h-[72px] w-12 shrink-0 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
         <Image
           src="/jack-crawford.jpg"
           alt="Jack Crawford"

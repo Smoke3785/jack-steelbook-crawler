@@ -23,9 +23,9 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
   return (
     <Link
       href={`/${edition.slug}`}
-      className="flex items-center gap-3 rounded-xl bg-white p-2.5 ring-1 ring-zinc-200 transition-shadow hover:shadow-md dark:bg-zinc-900 dark:ring-zinc-800"
+      className="flex items-center gap-3 bg-white p-2.5 ring-1 ring-zinc-200 transition-shadow hover:shadow-md dark:bg-zinc-900 dark:ring-zinc-800"
     >
-      <div className="relative h-[72px] w-12 shrink-0 overflow-hidden rounded-md bg-zinc-100 dark:bg-zinc-800">
+      <div className="relative h-[72px] w-12 shrink-0 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
         {edition.image_url ? (
           <Image
             src={edition.image_url}

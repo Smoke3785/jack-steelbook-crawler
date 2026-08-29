@@ -19,7 +19,7 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
   return (
     <Link
       href={`/${edition.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl bg-white ring-1 ring-zinc-200 transition-shadow hover:shadow-md dark:bg-zinc-900 dark:ring-zinc-800"
+      className="group flex flex-col overflow-hidden bg-white ring-1 ring-zinc-200 transition-shadow hover:shadow-md dark:bg-zinc-900 dark:ring-zinc-800"
     >
       <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
         {edition.image_url ? (

@@ -40,7 +40,7 @@ export function Pagination({
       {filters.page > 1 ? (
         <Link
           href={browseHref({ page: filters.page - 1 }, filters)}
-          className="h-9 rounded-lg px-3 text-sm leading-9 text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+          className="h-9 px-3 text-sm leading-9 text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
         >
           ← Prev
         </Link>
@@ -62,7 +62,7 @@ export function Pagination({
             key={entry}
             href={browseHref({ page: entry }, filters)}
             aria-current={isCurrent ? "page" : undefined}
-            className={`h-9 min-w-9 rounded-lg px-2.5 text-center text-sm leading-9 ring-1 ring-inset ${
+            className={`h-9 min-w-9 px-2.5 text-center text-sm leading-9 ring-1 ring-inset ${
               isCurrent
                 ? "bg-zinc-900 text-white ring-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:ring-zinc-100"
                 : "text-zinc-600 ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
@@ -76,7 +76,7 @@ export function Pagination({
       {filters.page < pageCount ? (
         <Link
           href={browseHref({ page: filters.page + 1 }, filters)}
-          className="h-9 rounded-lg px-3 text-sm leading-9 text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+          className="h-9 px-3 text-sm leading-9 text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
         >
           Next →
         </Link>

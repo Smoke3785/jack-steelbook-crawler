@@ -112,7 +112,7 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
       <div className="grid gap-6 md:grid-cols-[280px_1fr]">
         <div className="mx-auto w-full max-w-[280px]">
-          <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-800">
+          <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-800">
             {edition.image_url ? (
               <Image
                 src={edition.image_url}
@@ -155,7 +155,7 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
           </div>
 
           {cheapest ? (
-            <div className="rounded-xl bg-zinc-50 p-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+            <div className=" bg-zinc-50 p-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
               <p className="text-xs uppercase tracking-wide text-zinc-400">Cheapest in stock</p>
               <p className="mt-1 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
                 {formatPriceRange(cheapest.price_min_cents, cheapest.price_max_cents)}
@@ -175,20 +175,19 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
               ) : null}
             </div>
           ) : (
-            <div className="rounded-xl bg-zinc-50 p-4 text-sm text-zinc-500 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:ring-zinc-800">
+            <div className=" bg-zinc-50 p-4 text-sm text-zinc-500 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:ring-zinc-800">
               No live listing currently in stock.
             </div>
           )}
 
           {movie ? (
-            <div className="flex gap-4 rounded-xl bg-zinc-50 p-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+            <div className="flex gap-4 bg-zinc-50 p-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
               {movie.poster_path ? (
                 <Image
                   src={`${TMDB_IMAGE_BASE}${movie.poster_path}`}
                   alt={movie.title}
                   width={92}
                   height={138}
-                  className="rounded-lg"
                 />
               ) : null}
               <div className="min-w-0">
@@ -218,7 +217,7 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
         {listings.length === 0 ? (
           <p className="text-sm text-zinc-500">No listings recorded.</p>
         ) : (
-          <div className="overflow-x-auto rounded-xl ring-1 ring-zinc-200 dark:ring-zinc-800">
+          <div className="overflow-x-auto ring-1 ring-zinc-200 dark:ring-zinc-800">
             <table className="w-full min-w-[640px] text-sm">
               <thead>
                 <tr className="border-b border-zinc-200 bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
@@ -281,7 +280,7 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
             {events.map((event) => (
               <li
                 key={event.id}
-                className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-zinc-50 px-4 py-2.5 text-sm ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
+                className="flex flex-wrap items-center gap-x-3 gap-y-1 bg-zinc-50 px-4 py-2.5 text-sm ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
               >
                 <span className="font-medium text-zinc-800 dark:text-zinc-200">
                   {eventLabel(event)}
