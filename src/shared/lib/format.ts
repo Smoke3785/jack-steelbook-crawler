@@ -33,6 +33,12 @@ export function formatDate(iso: string): string {
   });
 }
 
+/** Formats a Date the way SQLite stores datetimes ("YYYY-MM-DD HH:MM:SS" UTC),
+ *  so the parse-and-append-Z helpers above round-trip it. */
+export function toSqliteUtc(date: Date): string {
+  return date.toISOString().slice(0, 19).replace("T", " ");
+}
+
 export function formatDateTime(iso: string): string {
   return new Date(`${iso.replace(" ", "T")}Z`).toLocaleString("en-US", {
     year: "numeric",
@@ -70,4 +76,28 @@ export function timeAgo(iso: string): string {
   }
 
   return formatDate(iso);
+}
+
+/** Inverse of timeAgo for future timestamps (e.g. the next scheduled ingest). */
+export function timeUntil(iso: string): string {
+  const then = new Date(`${iso.replace(" ", "T")}Z`).getTime();
+  const seconds = Math.floor((then - Date.now()) / 1000);
+
+  if (seconds <= 0) {
+    return "any moment";
+  }
+
+  const minutes = Math.floor(seconds / 60);
+
+  if (minutes < 60) {
+    return `in ${minutes}m`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+
+  if (hours < 24) {
+    return `in ${hours}h`;
+  }
+
+  return `in ${Math.floor(hours / 24)}d`;
 }

@@ -2,7 +2,13 @@ import Link from "next/link";
 import { browseHref, type ListingFilters } from "../filters";
 
 function pageWindow(current: number, pageCount: number): (number | "gap")[] {
-  const pages = new Set<number>([1, pageCount, current, current - 1, current + 1]);
+  const pages = new Set<number>([
+    1,
+    pageCount,
+    current,
+    current - 1,
+    current + 1,
+  ]);
 
   const sorted = [...pages]
     .filter((p) => p >= 1 && p <= pageCount)
@@ -33,54 +39,56 @@ export function Pagination({
   }
 
   return (
-    <nav
-      aria-label="Pagination"
-      className="flex flex-wrap items-center justify-center gap-1.5"
-    >
-      {filters.page > 1 ? (
-        <Link
-          href={browseHref({ page: filters.page - 1 }, filters)}
-          className="h-9 px-3 text-sm leading-9 text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
-        >
-          ← Prev
-        </Link>
-      ) : null}
-
-      {pageWindow(filters.page, pageCount).map((entry, idx) => {
-        if (entry === "gap") {
-          return (
-            <span key={`gap-${idx}`} className="px-1 text-zinc-400">
-              …
-            </span>
-          );
-        }
-
-        const isCurrent = entry === filters.page;
-
-        return (
+    <section className="mt-0 border-t-0 border-zinc-200 dark:border-zinc-800 mx-auto w-full max-w-7xl px-[24px]">
+      <nav
+        aria-label="Pagination"
+        className="flex  flex-wrap items-center justify-center gap-2 py-[12px] border-x dark:border-zinc-800 "
+      >
+        {filters.page > 1 ? (
           <Link
-            key={entry}
-            href={browseHref({ page: entry }, filters)}
-            aria-current={isCurrent ? "page" : undefined}
-            className={`h-9 min-w-9 px-2.5 text-center text-sm leading-9 ring-1 ring-inset ${
-              isCurrent
-                ? "bg-zinc-900 text-white ring-zinc-900 dark:bg-zinc-100 dark:text-zinc-900 dark:ring-zinc-100"
-                : "text-zinc-600 ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
-            }`}
+            href={browseHref({ page: filters.page - 1 }, filters)}
+            className="h-9 border border-zinc-300 px-3 text-sm leading-8 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
           >
-            {entry}
+            ← Prev
           </Link>
-        );
-      })}
+        ) : null}
 
-      {filters.page < pageCount ? (
-        <Link
-          href={browseHref({ page: filters.page + 1 }, filters)}
-          className="h-9 px-3 text-sm leading-9 text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
-        >
-          Next →
-        </Link>
-      ) : null}
-    </nav>
+        {pageWindow(filters.page, pageCount).map((entry, idx) => {
+          if (entry === "gap") {
+            return (
+              <span key={`gap-${idx}`} className="px-1 text-zinc-400">
+                …
+              </span>
+            );
+          }
+
+          const isCurrent = entry === filters.page;
+
+          return (
+            <Link
+              key={entry}
+              href={browseHref({ page: entry }, filters)}
+              aria-current={isCurrent ? "page" : undefined}
+              className={`h-9 min-w-9 border px-2.5 text-center text-sm leading-8 ${
+                isCurrent
+                  ? "border-transparent bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                  : "border-zinc-300 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+              }`}
+            >
+              {entry}
+            </Link>
+          );
+        })}
+
+        {filters.page < pageCount ? (
+          <Link
+            href={browseHref({ page: filters.page + 1 }, filters)}
+            className="h-9 border border-zinc-300 px-3 text-sm leading-8 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          >
+            Next →
+          </Link>
+        ) : null}
+      </nav>
+    </section>
   );
 }

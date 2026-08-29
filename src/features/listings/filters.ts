@@ -41,7 +41,8 @@ export const DEFAULT_FILTERS: ListingFilters = {
   page: 1,
 };
 
-export const PAGE_SIZE = 24;
+/** 5-per-row grid at xl, 5 rows — no orphan card on the last full page. */
+export const PAGE_SIZE = 25;
 
 type RawParams = Record<string, string | string[] | undefined>;
 

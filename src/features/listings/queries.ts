@@ -13,6 +13,7 @@ export interface BrowseItem {
   image_url: string | null;
   listing_count: number;
   available_count: number;
+  stock_state: string | null;
   price_min_cents: number | null;
   price_max_cents: number | null;
   first_seen_at: string;
@@ -177,7 +178,7 @@ export async function queryBrowse(filters: ListingFilters): Promise<BrowseResult
   const items = db
     .prepare(
       `SELECT e.id, e.slug, e.display_title, e.label, e.catalog_code, e.variant, e.format,
-              e.image_url, e.listing_count, e.available_count,
+              e.image_url, e.listing_count, e.available_count, e.stock_state,
               e.price_min_cents, e.price_max_cents, e.first_seen_at, e.last_changed_at,
               m.title AS movie_title,
               CASE WHEN m.release_date IS NULL THEN NULL

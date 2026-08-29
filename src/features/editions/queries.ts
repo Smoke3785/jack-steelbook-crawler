@@ -1,5 +1,6 @@
 import { connection } from "next/server";
 import { getDb, type EditionRow, type MovieRow } from "@/shared/db";
+import { LISTING_STOCK_RANK_SQL, stockStateFromRank, type StockState } from "@/shared/lib/stock-state";
 
 export interface EditionListing {
   store_id: string;
@@ -10,6 +11,7 @@ export interface EditionListing {
   price_min_cents: number | null;
   price_max_cents: number | null;
   available: boolean;
+  stock_state: StockState;
   last_seen_at: string;
   last_changed_at: string;
   removed: boolean;
@@ -54,6 +56,7 @@ export async function getEditionDetail(slug: string): Promise<EditionDetail | nu
     .prepare(
       `SELECT r.store_id, r.product_id, s.name AS store_name, r.url, r.title,
               r.price_min_cents, r.price_max_cents, r.available,
+              (${LISTING_STOCK_RANK_SQL}) AS stock_rank,
               r.last_seen_at, r.last_changed_at, r.removed_at
        FROM parsed_listings p
        JOIN raw_listings r ON r.store_id = p.store_id AND r.product_id = p.product_id
@@ -61,8 +64,9 @@ export async function getEditionDetail(slug: string): Promise<EditionDetail | nu
        WHERE p.edition_id = ?
        ORDER BY r.removed_at IS NOT NULL, r.price_min_cents IS NULL, r.price_min_cents ASC`,
     )
-    .all(edition.id) as (Omit<EditionListing, "available" | "removed"> & {
+    .all(edition.id) as (Omit<EditionListing, "available" | "removed" | "stock_state"> & {
       available: number;
+      stock_rank: number;
       removed_at: string | null;
     })[];
 
@@ -83,6 +87,7 @@ export async function getEditionDetail(slug: string): Promise<EditionDetail | nu
     listings: listings.map((l) => ({
       ...l,
       available: l.available === 1,
+      stock_state: stockStateFromRank(l.stock_rank),
       removed: l.removed_at !== null,
     })),
     events,

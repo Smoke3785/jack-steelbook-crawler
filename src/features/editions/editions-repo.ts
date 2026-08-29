@@ -1,5 +1,6 @@
 import type { DB } from "@/shared/db";
 import { slugify } from "@/shared/lib/slug";
+import { LISTING_STOCK_RANK_SQL } from "@/shared/lib/stock-state";
 import type { ParseResult } from "@/features/parse/parse-listing";
 
 export interface LinkSource {
@@ -144,6 +145,21 @@ export function refreshEditionRollups(db: DB, editionIds?: number[]): void {
       SELECT COUNT(*) FROM parsed_listings p
       JOIN raw_listings r ON r.store_id = p.store_id AND r.product_id = p.product_id
       WHERE p.edition_id = editions.id AND r.removed_at IS NULL AND r.available = 1
+    ),
+    stock_state = (
+      SELECT CASE MIN(st.rank)
+        WHEN 1 THEN 'pre-order'
+        WHEN 2 THEN 'in-stock'
+        WHEN 3 THEN 'sold-out'
+        WHEN 4 THEN 'tba'
+        ELSE 'unknown'
+      END
+      FROM (
+        SELECT ${LISTING_STOCK_RANK_SQL} AS rank
+        FROM parsed_listings p
+        JOIN raw_listings r ON r.store_id = p.store_id AND r.product_id = p.product_id
+        WHERE p.edition_id = editions.id AND r.removed_at IS NULL
+      ) st
     ),
     price_min_cents = (
       SELECT MIN(r.price_min_cents) FROM parsed_listings p

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/shared/ui/badge";
+import { StockBadge } from "@/shared/ui/stock-badge";
 import { storeNames } from "@/shared/lib/stores";
 import { formatDate, formatPriceRange } from "@/shared/lib/format";
 import { labelName } from "@/features/parse/labels";
@@ -18,11 +19,9 @@ function isNew(firstSeenAt: string): boolean {
 
 /** Compact one-line-per-edition row for the list view. */
 export function EditionRow({ edition }: { edition: BrowseItem }) {
-  const anyAvailable = edition.available_count > 0;
-
   return (
     <Link
-      href={`/${edition.slug}`}
+      href={`/editions/${edition.slug}`}
       className="flex items-center border-b border-r border-zinc-200 p-[6px] transition-shadow hover:shadow-md dark:border-zinc-800"
     >
       <div className="flex min-w-0 flex-1 items-center gap-3 bg-white p-[6px] dark:bg-zinc-900">
@@ -82,11 +81,11 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
           <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             {formatPriceRange(edition.price_min_cents, edition.price_max_cents)}
           </span>
-          <Badge tone={anyAvailable ? "available" : "sold-out"}>
-            {anyAvailable
-              ? `${edition.available_count}/${edition.listing_count}`
-              : "Sold out"}
-          </Badge>
+          <StockBadge
+            state={edition.stock_state}
+            inStock={edition.available_count}
+            total={edition.listing_count}
+          />
         </div>
       </div>
     </Link>

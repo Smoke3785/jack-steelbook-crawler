@@ -44,6 +44,7 @@ export interface EditionRow {
   image_url: string | null;
   listing_count: number;
   available_count: number;
+  stock_state: string | null;
   price_min_cents: number | null;
   price_max_cents: number | null;
   first_seen_at: string;

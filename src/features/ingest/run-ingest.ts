@@ -1,4 +1,5 @@
 import { getDb, type DB } from "@/shared/db";
+import { toSqliteUtc } from "@/shared/lib/format";
 import { parseListing } from "@/features/parse/parse-listing";
 import { linkParsedListing, refreshEditionRollups } from "@/features/editions/editions-repo";
 import { matchOutstandingEditions } from "@/features/tmdb/match";
@@ -159,7 +160,7 @@ export async function runIngest(trigger: "cron" | "manual" | "recheck" = "manual
   const tmdb = await matchOutstandingEditions(db);
 
   db.prepare("UPDATE ingest_runs SET finished_at = ?, stats_json = ? WHERE id = ?").run(
-    new Date().toISOString(),
+    toSqliteUtc(new Date()),
     JSON.stringify({ stores: storeResults, parsed, tmdb }),
     runId,
   );

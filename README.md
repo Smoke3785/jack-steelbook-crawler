@@ -17,8 +17,8 @@ Shopify feeds ──▶ raw_listings ──▶ parse ──▶ editions ──�
 2. **Parse** — new/changed listings get a structured pass: label (from title tokens or vendor), catalog number (`ME#\d+`, `FAC #\d+`, `BE#\d+`, …), variant (fullslip / lenti / quarter / one-click / Type A–D), format, and a cleaned title. Pure functions in `src/features/parse/`.
 3. **Edition grouping** — listings that parse to the same `(label, catalog, variant)` collapse into one edition, so ME#106 on three stores is one edition per variant. Retail releases without catalog numbers group by cleaned title + edition note.
 4. **TMDB** — the cleaned title searches TMDB (cached in `tmdb_cache`); the best candidate attaches to the edition with a confidence score. No key configured? Matching silently skips.
-5. **Browse** (`/`) — one page, all editions, every filter (search, store, label, variant, format, availability, new-only, sort, pagination) lives in URL params so any view is a shareable link.
-6. **Edition page** (`/<slug>`, e.g. `/me-95-full-slip`) — all listings for the edition with prices, stock, store links, and event history. Loading it schedules a background re-check of that edition's listings, cached ~1 hour per edition.
+5. **Browse** (`/`) and ops view at `/status` — one page, all editions, every filter (search, store, label, variant, format, availability, new-only, sort, pagination) lives in URL params so any view is a shareable link.
+6. **Edition page** (`/editions/<slug>`, e.g. `/editions/me-95-full-slip`) — all listings for the edition with prices, stock, store links, and event history. Loading it schedules a background re-check of that edition's listings, cached ~1 hour per edition.
 
 Nothing else is live — the site serves snapshot data; only the edition pages refresh themselves on view.
 

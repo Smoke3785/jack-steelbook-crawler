@@ -30,8 +30,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <header className="sticky top-0 z-20 border-b border-zinc-200 bg-white/85 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/85">
-          <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
+        <header className="sticky top-0 z-20 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-background">
+          <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 ">
             <Link href="/" className="flex items-baseline gap-2">
               <span className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
                 Steelbook Search
@@ -40,12 +40,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 jackhudsoncrawford.iliad.dev
               </span>
             </Link>
+
+            <nav className="flex items-center gap-4 text-sm">
+              <Link
+                className="text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                href="/status"
+              >
+                Status
+              </Link>
+            </nav>
           </div>
         </header>
 
         {children}
 
-        <footer className="border-t border-zinc-200 py-4 dark:border-zinc-800">
+        <footer className="h-14 flex align border-t border-zinc-800 ">
           <p className="mx-auto w-full max-w-7xl px-4 text-xs text-zinc-400 sm:px-6">
             <a target="_blank" href="https://iliad.dev/">
               website by iliad.dev
@@ -54,10 +63,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </footer>
 
         <Script
-          defer
-          data-domain="jackhudsoncrawford.iliad.dev"
           src="https://analytics.atlas-cms.rest/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+          data-domain="jackhudsoncrawford.iliad.dev"
           strategy="afterInteractive"
+          defer
         />
         <Script id="plausible-queue-shim" strategy="afterInteractive">
           {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}

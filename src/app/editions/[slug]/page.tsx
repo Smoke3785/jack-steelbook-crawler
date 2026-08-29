@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getEditionDetail } from "@/features/editions/queries";
 import { scheduleEditionRecheck } from "@/features/editions/recheck";
 import { Badge } from "@/shared/ui/badge";
+import { StockBadge } from "@/shared/ui/stock-badge";
 import { storeName } from "@/shared/lib/stores";
 import { formatDate, formatDateTime, formatPriceRange, timeAgo } from "@/shared/lib/format";
 import { labelName } from "@/features/parse/labels";
@@ -14,7 +15,7 @@ const TMDB_IMAGE_BASE = "https://image.tmdb.org/t/p/w342";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/[slug]">): Promise<Metadata> {
+}: PageProps<"/editions/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const detail = await getEditionDetail(slug);
 
@@ -89,7 +90,9 @@ function eventDetail(event: EditionEvent): string | null {
   }
 }
 
-export default async function EditionPage({ params }: PageProps<"/[slug]">) {
+export default async function EditionPage({
+  params,
+}: PageProps<"/editions/[slug]">) {
   const { slug } = await params;
   const detail = await getEditionDetail(slug);
 
@@ -244,9 +247,7 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
                       {formatPriceRange(listing.price_min_cents, listing.price_max_cents)}
                     </td>
                     <td className="px-4 py-3">
-                      <Badge tone={listing.available ? "available" : "sold-out"}>
-                        {listing.available ? "In stock" : "Sold out"}
-                      </Badge>
+                      <StockBadge state={listing.stock_state} />
                     </td>
                     <td className="px-4 py-3 text-zinc-500 dark:text-zinc-400">
                       {timeAgo(listing.last_seen_at)}

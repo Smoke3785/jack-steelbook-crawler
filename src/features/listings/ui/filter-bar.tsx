@@ -27,10 +27,10 @@ interface FilterBarProps {
 }
 
 export function FilterBar({ filters, facets }: FilterBarProps) {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
-  const [q, setQ] = useState(filters.q);
   const [syncedQ, setSyncedQ] = useState(filters.q);
+  const [q, setQ] = useState(filters.q);
+  const router = useRouter();
 
   // Keep the local input in sync when navigation changes the URL
   // (back/forward, clear button) — adjust during render, not in an effect.
@@ -57,193 +57,216 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
   };
 
   const hasActiveFilters =
-    filters.q !== "" ||
-    filters.store !== "" ||
-    filters.label !== "" ||
-    filters.variant !== "" ||
-    filters.format !== "" ||
     filters.availability !== "any" ||
+    filters.sort !== "newest" ||
     filters.status !== "all" ||
-    filters.sort !== "newest";
+    filters.format !== "" ||
+    filters.variant !== "" ||
+    filters.label !== "" ||
+    filters.store !== "" ||
+    filters.q !== "";
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-2">
-        <form
-          className="relative h-9 w-full min-w-52 flex-1"
-          onSubmit={(e) => {
-            e.preventDefault();
-            commitQuery(q);
-          }}
-        >
-          <input
-            type="search"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="Search title, catalog no., movie — press Enter"
-            className="h-9 w-full bg-zinc-100 px-3 pr-8 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
-          />
+    <div className="border border-t-0 border-b-0 p-[6px] dark:border-zinc-800">
+      <div className="flex flex-col gap-2 p-[6px]">
+        <div className="flex flex-wrap items-center gap-2">
+          <form
+            className="relative h-9 w-full min-w-52 flex-1"
+            onSubmit={(e) => {
+              e.preventDefault();
+              commitQuery(q);
+            }}
+          >
+            <input
+              type="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="Search title, catalog no., movie — press Enter"
+              className="h-9 w-full bg-zinc-100 px-3 pr-8 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
+            />
 
-          {q !== "" ? (
-            <button
-              type="button"
-              aria-label="Clear search"
-              onClick={() => {
-                setQ("");
-                commitQuery("");
-              }}
-              className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
-            >
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-                <path d="M1 1l8 8M9 1l-8 8" />
-              </svg>
-            </button>
-          ) : null}
-        </form>
-
-        <select
-          aria-label="Store"
-          value={filters.store}
-          onChange={(e) => navigate({ store: e.target.value })}
-          className={SELECT_CLASS}
-        >
-          <option value="">All stores</option>
-          {facets.stores.map((s) => (
-            <option key={s.id} value={s.id}>
-              {storeName(s.id)} ({s.count})
-            </option>
-          ))}
-        </select>
-
-        <select
-          aria-label="Label"
-          value={filters.label}
-          onChange={(e) => navigate({ label: e.target.value })}
-          className={SELECT_CLASS}
-        >
-          <option value="">All labels</option>
-          {facets.labels.map((l) => (
-            <option key={l.value} value={l.value}>
-              {l.value === "retail" ? "Retail / other" : l.value.replaceAll("-", " ")} ({l.count})
-            </option>
-          ))}
-        </select>
-
-        <select
-          aria-label="Variant"
-          value={filters.variant}
-          onChange={(e) => navigate({ variant: e.target.value })}
-          className={SELECT_CLASS}
-        >
-          <option value="">All variants</option>
-          {facets.variants.map((v) => (
-            <option key={v.value} value={v.value}>
-              {v.value.replaceAll("-", " ")} ({v.count})
-            </option>
-          ))}
-        </select>
-
-        <select
-          aria-label="Format"
-          value={filters.format}
-          onChange={(e) => navigate({ format: e.target.value })}
-          className={SELECT_CLASS}
-        >
-          <option value="">All formats</option>
-          {facets.formats.map((f) => (
-            <option key={f.value} value={f.value}>
-              {formatDisplay(f.value)} ({f.count})
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <select
-          aria-label="Availability"
-          value={filters.availability}
-          onChange={(e) => navigate({ availability: e.target.value as AvailabilityFilter })}
-          className={SELECT_CLASS}
-        >
-          {AVAILABILITY_VALUES.map((a) => (
-            <option key={a} value={a}>
-              {a === "any" ? "Any availability" : a === "available" ? "In stock" : "Sold out"}
-            </option>
-          ))}
-        </select>
-
-        <select
-          aria-label="Status"
-          value={filters.status}
-          onChange={(e) => navigate({ status: e.target.value as StatusFilter })}
-          className={SELECT_CLASS}
-        >
-          {STATUS_VALUES.map((s) => (
-            <option key={s} value={s}>
-              {s === "all" ? "All releases" : "New (14 days)"}
-            </option>
-          ))}
-        </select>
-
-        <select
-          aria-label="Sort"
-          value={filters.sort}
-          onChange={(e) => navigate({ sort: e.target.value as SortKey })}
-          className={SELECT_CLASS}
-        >
-          {SORT_KEYS.map((s) => (
-            <option key={s} value={s}>
-              Sort: {sortLabel(s)}
-            </option>
-          ))}
-        </select>
-
-        <div
-          role="group"
-          aria-label="View"
-          className="flex h-9 items-center overflow-hidden ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
-        >
-          {VIEW_VALUES.map((view, idx) => {
-            const isActive = filters.view === view;
-
-            return (
+            {q !== "" ? (
               <button
-                key={view}
+                aria-label="Clear search"
                 type="button"
-                aria-pressed={isActive}
-                title={view === "grid" ? "Grid view" : "List view"}
-                onClick={() => navigate({ view: view as ViewFilter })}
-                className={`flex h-9 w-9 items-center justify-center ${
-                  idx > 0 ? "border-l border-zinc-200 dark:border-zinc-700" : ""
-                } ${
-                  isActive
-                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                    : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                }`}
+                onClick={() => {
+                  setQ("");
+                  commitQuery("");
+                }}
+                className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
               >
-                {view === "grid" ? <GridIcon /> : <ListIcon />}
+                <svg
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M1 1l8 8M9 1l-8 8" />
+                </svg>
               </button>
-            );
-          })}
+            ) : null}
+          </form>
+
+          <select
+            aria-label="Store"
+            value={filters.store}
+            onChange={(e) => navigate({ store: e.target.value })}
+            className={SELECT_CLASS}
+          >
+            <option value="">All stores</option>
+            {facets.stores.map((s) => (
+              <option key={s.id} value={s.id}>
+                {storeName(s.id)} ({s.count})
+              </option>
+            ))}
+          </select>
+
+          <select
+            aria-label="Label"
+            value={filters.label}
+            onChange={(e) => navigate({ label: e.target.value })}
+            className={SELECT_CLASS}
+          >
+            <option value="">All labels</option>
+            {facets.labels.map((l) => (
+              <option key={l.value} value={l.value}>
+                {l.value === "retail"
+                  ? "Retail / other"
+                  : l.value.replaceAll("-", " ")}{" "}
+                ({l.count})
+              </option>
+            ))}
+          </select>
+
+          <select
+            aria-label="Variant"
+            value={filters.variant}
+            onChange={(e) => navigate({ variant: e.target.value })}
+            className={SELECT_CLASS}
+          >
+            <option value="">All variants</option>
+            {facets.variants.map((v) => (
+              <option key={v.value} value={v.value}>
+                {v.value.replaceAll("-", " ")} ({v.count})
+              </option>
+            ))}
+          </select>
+
+          <select
+            aria-label="Format"
+            value={filters.format}
+            onChange={(e) => navigate({ format: e.target.value })}
+            className={SELECT_CLASS}
+          >
+            <option value="">All formats</option>
+            {facets.formats.map((f) => (
+              <option key={f.value} value={f.value}>
+                {formatDisplay(f.value)} ({f.count})
+              </option>
+            ))}
+          </select>
         </div>
 
-        {hasActiveFilters ? (
-          <button
-            type="button"
-            onClick={() =>
-              startTransition(() => {
-                router.replace("/", { scroll: false });
-              })
+        <div className="flex flex-wrap items-center gap-2">
+          <select
+            aria-label="Availability"
+            value={filters.availability}
+            onChange={(e) =>
+              navigate({ availability: e.target.value as AvailabilityFilter })
             }
-            className="ml-auto h-9 px-3 text-sm font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+            className={SELECT_CLASS}
           >
-            Clear filters
-          </button>
-        ) : null}
+            {AVAILABILITY_VALUES.map((a) => (
+              <option key={a} value={a}>
+                {a === "any"
+                  ? "Any availability"
+                  : a === "available"
+                    ? "In stock"
+                    : "Sold out"}
+              </option>
+            ))}
+          </select>
 
-        {isPending ? (
-          <span className="text-xs text-zinc-400">Updating…</span>
-        ) : null}
+          <select
+            aria-label="Status"
+            value={filters.status}
+            onChange={(e) =>
+              navigate({ status: e.target.value as StatusFilter })
+            }
+            className={SELECT_CLASS}
+          >
+            {STATUS_VALUES.map((s) => (
+              <option key={s} value={s}>
+                {s === "all" ? "All releases" : "New (14 days)"}
+              </option>
+            ))}
+          </select>
+
+          <select
+            aria-label="Sort"
+            value={filters.sort}
+            onChange={(e) => navigate({ sort: e.target.value as SortKey })}
+            className={SELECT_CLASS}
+          >
+            {SORT_KEYS.map((s) => (
+              <option key={s} value={s}>
+                Sort: {sortLabel(s)}
+              </option>
+            ))}
+          </select>
+
+          <div
+            role="group"
+            aria-label="View"
+            className="flex h-9 items-center overflow-hidden ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
+          >
+            {VIEW_VALUES.map((view, idx) => {
+              const isActive = filters.view === view;
+
+              return (
+                <button
+                  key={view}
+                  type="button"
+                  aria-pressed={isActive}
+                  title={view === "grid" ? "Grid view" : "List view"}
+                  onClick={() => navigate({ view: view as ViewFilter })}
+                  className={`flex h-9 w-9 items-center justify-center ${
+                    idx > 0
+                      ? "border-l border-zinc-200 dark:border-zinc-700"
+                      : ""
+                  } ${
+                    isActive
+                      ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                      : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
+                  }`}
+                >
+                  {view === "grid" ? <GridIcon /> : <ListIcon />}
+                </button>
+              );
+            })}
+          </div>
+
+          {hasActiveFilters ? (
+            <button
+              type="button"
+              onClick={() =>
+                startTransition(() => {
+                  router.replace("/", { scroll: false });
+                })
+              }
+              className="ml-auto h-9 px-3 text-sm font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+            >
+              Clear filters
+            </button>
+          ) : null}
+
+          {isPending ? (
+            <span className="text-xs text-zinc-400">Updating…</span>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -264,7 +287,13 @@ function sortLabel(sort: SortKey): string {
 
 function GridIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="currentColor"
+      aria-hidden="true"
+    >
       <rect x="1" y="1" width="5" height="5" rx="1" />
       <rect x="8" y="1" width="5" height="5" rx="1" />
       <rect x="1" y="8" width="5" height="5" rx="1" />
@@ -275,7 +304,13 @@ function GridIcon() {
 
 function ListIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor" aria-hidden="true">
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 14 14"
+      fill="currentColor"
+      aria-hidden="true"
+    >
       <rect x="1" y="2" width="12" height="2" rx="1" />
       <rect x="1" y="6" width="12" height="2" rx="1" />
       <rect x="1" y="10" width="12" height="2" rx="1" />
