@@ -14,7 +14,7 @@ import {
   type StatusFilter,
   type ViewFilter,
 } from "../filters";
-import { storeName } from "@/shared/ui/store-badge";
+import { storeName } from "@/shared/lib/stores";
 import { formatDisplay } from "@/features/parse/format";
 import type { BrowseFacets } from "../queries";
 
@@ -181,7 +181,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
         <div
           role="group"
           aria-label="View"
-          className="flex h-9 items-center rounded-lg ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
+          className="flex h-9 items-center overflow-hidden rounded-lg ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
         >
           {VIEW_VALUES.map((view, idx) => {
             const isActive = filters.view === view;

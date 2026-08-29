@@ -56,17 +56,15 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
           {edition.variant ? <span>{edition.variant.replaceAll("-", " ")}</span> : null}
           <span>{formatDisplay(edition.format)}</span>
           {edition.movie_year ? <span>({edition.movie_year})</span> : null}
-          <span className="hidden sm:inline">· seen {formatDate(edition.first_seen_at)}</span>
+          <span className="hidden sm:inline">
+            · seen {formatDate(edition.first_seen_at)}
+            {edition.last_changed_at ? ` · updated ${formatDate(edition.last_changed_at)}` : ""}
+          </span>
         </div>
-      </div>
 
-      <div className="hidden shrink-0 flex-wrap justify-end gap-1 md:flex">
-        {edition.store_ids.slice(0, 3).map((storeId) => (
-          <StoreBadge key={storeId} storeId={storeId} />
-        ))}
-        {edition.store_ids.length > 3 ? (
-          <span className="text-[11px] text-zinc-400">+{edition.store_ids.length - 3}</span>
-        ) : null}
+        <p className="truncate text-[11px] text-zinc-400" title={storeNames(edition.store_ids)}>
+          {storeNames(edition.store_ids)}
+        </p>
       </div>
 
       <div className="flex w-24 shrink-0 flex-col items-end gap-1">

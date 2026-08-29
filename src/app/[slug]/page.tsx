@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { getEditionDetail } from "@/features/editions/queries";
 import { scheduleEditionRecheck } from "@/features/editions/recheck";
 import { Badge } from "@/shared/ui/badge";
-import { StoreBadge } from "@/shared/ui/store-badge";
+import { storeName } from "@/shared/lib/stores";
 import { formatDate, formatPriceRange, timeAgo } from "@/shared/lib/format";
 import { labelName } from "@/features/parse/labels";
 import { formatDisplay } from "@/features/parse/format";
@@ -125,6 +125,7 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
               {new Set(liveListings.map((l) => l.store_id)).size} store
               {new Set(liveListings.map((l) => l.store_id)).size === 1 ? "" : "s"} · first
               seen {formatDate(edition.first_seen_at)}
+              {edition.last_changed_at ? ` · updated ${formatDate(edition.last_changed_at)}` : ""}
             </p>
           </div>
 
@@ -133,8 +134,8 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
               <p className="text-xs uppercase tracking-wide text-zinc-400">Cheapest in stock</p>
               <p className="mt-1 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
                 {formatPriceRange(cheapest.price_min_cents, cheapest.price_max_cents)}
-                <span className="ml-2 align-middle">
-                  <StoreBadge storeId={cheapest.store_id} />
+                <span className="ml-2 align-middle text-sm font-normal text-zinc-500 dark:text-zinc-400">
+                  at {storeName(cheapest.store_id)}
                 </span>
               </p>
               {cheapest.url ? (
@@ -209,10 +210,10 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
                     key={`${listing.store_id}-${listing.product_id}`}
                     className="border-b border-zinc-100 last:border-0 dark:border-zinc-800/60"
                   >
-                    <td className="px-4 py-3">
-                      <StoreBadge storeId={listing.store_id} />
+                    <td className="px-4 py-3 font-medium text-zinc-800 dark:text-zinc-200">
+                      {listing.store_name}
                       {listing.removed ? (
-                        <span className="ml-2 text-xs text-zinc-400">(delisted)</span>
+                        <span className="ml-2 text-xs font-normal text-zinc-400">(delisted)</span>
                       ) : null}
                     </td>
                     <td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
@@ -260,7 +261,9 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
                 <span className="font-medium text-zinc-800 dark:text-zinc-200">
                   {eventLabel(event)}
                 </span>
-                <StoreBadge storeId={event.store_id} />
+                <span className="text-zinc-500 dark:text-zinc-400">
+                  {storeName(event.store_id)}
+                </span>
                 {eventDetail(event) ? (
                   <span className="text-zinc-500 dark:text-zinc-400">{eventDetail(event)}</span>
                 ) : null}
