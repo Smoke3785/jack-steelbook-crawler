@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -51,6 +52,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </a>
           </p>
         </footer>
+
+        <Script
+          defer
+          data-domain="jackhudsoncrawford.iliad.dev"
+          src="https://analytics.atlas-cms.rest/js/script.file-downloads.hash.outbound-links.pageview-props.revenue.tagged-events.js"
+          strategy="afterInteractive"
+        />
+        <Script id="plausible-queue-shim" strategy="afterInteractive">
+          {`window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }`}
+        </Script>
       </body>
     </html>
   );

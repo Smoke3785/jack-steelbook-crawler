@@ -22,9 +22,34 @@ export async function generateMetadata({
     return { title: "Edition not found" };
   }
 
+  const { edition, movie, listings } = detail;
+  const storeCount = new Set(listings.filter((l) => !l.removed).map((l) => l.store_id)).size;
+  const description =
+    movie?.overview?.slice(0, 200) ??
+    `${edition.listing_count} listing${edition.listing_count === 1 ? "" : "s"} across ${storeCount} store${storeCount === 1 ? "" : "s"}`;
+
+  const openGraph = edition.image_url
+    ? {
+        title: edition.display_title,
+        description,
+        images: [{ url: edition.image_url, alt: edition.display_title }],
+      }
+    : undefined;
+
+  const twitter = edition.image_url
+    ? {
+        card: "summary_large_image" as const,
+        title: edition.display_title,
+        description,
+        images: [edition.image_url],
+      }
+    : undefined;
+
   return {
-    title: detail.edition.display_title,
-    description: detail.movie?.overview?.slice(0, 160) ?? undefined,
+    title: edition.display_title,
+    description,
+    openGraph,
+    twitter,
   };
 }
 
