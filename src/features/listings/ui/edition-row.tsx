@@ -22,10 +22,10 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
   return (
     <Link
       href={`/editions/${edition.slug}`}
-      className="flex items-center border-b border-r border-zinc-200 p-[6px] transition-shadow hover:shadow-md dark:border-zinc-800"
+      className="flex items-center border-b border-r p-[6px] transition-shadow hover:shadow-md border-zinc-800"
     >
-      <div className="flex min-w-0 flex-1 items-center gap-3 bg-white p-[6px] dark:bg-zinc-900">
-        <div className="relative h-[72px] w-12 shrink-0 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+      <div className="flex min-w-0 flex-1 items-center gap-3 p-[6px] bg-zinc-900">
+        <div className="relative h-[72px] w-12 shrink-0 overflow-hidden bg-zinc-800">
           {edition.image_url ? (
             <Image
               src={edition.image_url}
@@ -35,7 +35,7 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
               className="object-cover"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-xs font-semibold text-zinc-300 dark:text-zinc-600">
+            <div className="flex h-full items-center justify-center text-xs font-semibold text-zinc-600">
               {edition.display_title.slice(0, 2)}
             </div>
           )}
@@ -43,18 +43,18 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
 
         <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex min-w-0 items-baseline gap-2">
-          <span className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          <span className="truncate text-sm font-semibold text-zinc-100">
             {edition.display_title}
           </span>
           {edition.catalog_code ? (
-            <span className="shrink-0 text-xs font-medium text-blue-600 dark:text-blue-400">
+            <span className="shrink-0 text-xs font-medium text-blue-400">
               {edition.catalog_code}
             </span>
           ) : null}
           {isNew(edition.first_seen_at) ? <Badge tone="new">New</Badge> : null}
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-400">
           {edition.label ? <span>{labelName(edition.label)}</span> : null}
           {edition.variant ? (
             <span>{edition.variant.replaceAll("-", " ")}</span>
@@ -78,7 +78,7 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
       </div>
 
       <div className="flex w-24 shrink-0 flex-col items-end gap-1">
-          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+          <span className="text-sm font-semibold text-zinc-100">
             {formatPriceRange(edition.price_min_cents, edition.price_max_cents)}
           </span>
           <StockBadge

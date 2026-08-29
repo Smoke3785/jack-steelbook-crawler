@@ -19,7 +19,7 @@ import { formatDisplay } from "@/features/parse/format";
 import type { BrowseFacets } from "../queries";
 
 const SELECT_CLASS =
-  "h-9 border-0 bg-zinc-100 px-2.5 text-sm text-zinc-800 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500";
+  "h-9 border-0 pl-2.5 pr-7 text-sm outline-none ring-1 ring-inset focus:ring-2 bg-zinc-800 text-zinc-200 ring-zinc-700 focus:ring-zinc-500";
 
 interface FilterBarProps {
   filters: ListingFilters;
@@ -67,7 +67,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
     filters.q !== "";
 
   return (
-    <div className="border border-t-0 border-b-0 p-[6px] dark:border-zinc-800">
+    <div className="border-t-0 border-b-0 p-[6px] border-zinc-800 border-x">
       <div className="flex flex-col gap-2 p-[6px]">
         <div className="flex flex-wrap items-center gap-2">
           <form
@@ -82,7 +82,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search title, catalog no., movie — press Enter"
-              className="h-9 w-full bg-zinc-100 px-3 pr-8 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
+              className="h-9 w-full px-3 pr-8 text-sm placeholder:text-zinc-400 outline-none ring-1 ring-inset focus:ring-2 bg-zinc-800 text-zinc-200 ring-zinc-700 focus:ring-zinc-500"
             />
 
             {q !== "" ? (
@@ -93,7 +93,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
                   setQ("");
                   commitQuery("");
                 }}
-                className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center text-zinc-400 hover:text-zinc-200"
               >
                 <svg
                   width="10"
@@ -221,7 +221,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
           <div
             role="group"
             aria-label="View"
-            className="flex h-9 items-center overflow-hidden ring-1 ring-inset ring-zinc-200 dark:ring-zinc-700"
+            className="flex h-9 items-center overflow-hidden ring-1 ring-inset ring-zinc-700"
           >
             {VIEW_VALUES.map((view, idx) => {
               const isActive = filters.view === view;
@@ -233,15 +233,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
                   aria-pressed={isActive}
                   title={view === "grid" ? "Grid view" : "List view"}
                   onClick={() => navigate({ view: view as ViewFilter })}
-                  className={`flex h-9 w-9 items-center justify-center ${
-                    idx > 0
-                      ? "border-l border-zinc-200 dark:border-zinc-700"
-                      : ""
-                  } ${
-                    isActive
-                      ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                      : "text-zinc-500 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-800"
-                  }`}
+                  className={`flex h-9 w-9 items-center justify-center ${idx > 0 ? "border-l border-zinc-700" : ""} ${isActive ? "bg-zinc-100 text-zinc-900" : "text-zinc-400 hover:bg-zinc-800"}`}
                 >
                   {view === "grid" ? <GridIcon /> : <ListIcon />}
                 </button>
@@ -257,7 +249,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
                   router.replace("/", { scroll: false });
                 })
               }
-              className="ml-auto h-9 px-3 text-sm font-medium text-zinc-600 ring-1 ring-inset ring-zinc-200 hover:bg-zinc-100 dark:text-zinc-300 dark:ring-zinc-700 dark:hover:bg-zinc-800"
+              className="ml-auto h-9 px-3 text-sm font-medium ring-1 ring-inset text-zinc-300 ring-zinc-700 hover:bg-zinc-800"
             >
               Clear filters
             </button>

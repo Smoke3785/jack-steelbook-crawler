@@ -30,10 +30,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <header className="sticky top-0 z-20 border-b border-zinc-200 bg-white dark:border-zinc-800 dark:bg-background">
+        <header className="sticky top-0 z-20 border-b border-zinc-800 bg-background">
           <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 ">
             <Link href="/" className="flex items-baseline gap-2">
-              <span className="text-lg font-semibold tracking-tight text-zinc-900 dark:text-zinc-50">
+              <span className="text-lg font-semibold tracking-tight text-zinc-50">
                 Steelbook Search
               </span>
               <span className="hidden text-xs text-zinc-400 sm:inline">
@@ -43,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
             <nav className="flex items-center gap-4 text-sm">
               <Link
-                className="text-zinc-500 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+                className="transition-colors text-zinc-400 hover:text-zinc-100"
                 href="/status"
               >
                 Status
@@ -54,8 +54,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 
         {children}
 
-        <footer className="h-14 flex align border-t border-zinc-800 ">
-          <p className="mx-auto w-full max-w-7xl px-4 text-xs text-zinc-400 sm:px-6">
+        <footer className="h-14 flex align border-t border-zinc-800 items-center">
+          <p className="mx-auto h-min w-full max-w-7xl px-4 text-xs text-zinc-400 sm:px-6">
             <a target="_blank" href="https://iliad.dev/">
               website by iliad.dev
             </a>

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="border border-zinc-200 p-[6px] dark:border-zinc-800">
-      <div className="flex flex-col gap-3 bg-white p-[6px] dark:bg-zinc-900">
+    <section className="border border-zinc-800 p-[6px]">
+      <div className="flex flex-col gap-3 p-[6px] bg-zinc-900">
         <h2 className="text-xs font-medium uppercase tracking-wide text-zinc-400">{title}</h2>
         {children}
       </div>
@@ -23,7 +23,7 @@ function Stat({ label, value, hint }: { label: string; value: string; hint?: str
   return (
     <div>
       <p className="text-xs uppercase tracking-wide text-zinc-400">{label}</p>
-      <p className="mt-0.5 text-lg font-semibold text-zinc-900 dark:text-zinc-50" title={hint}>
+      <p className="mt-0.5 text-lg font-semibold text-zinc-50" title={hint}>
         {value}
       </p>
       {hint ? <p className="text-[11px] text-zinc-400">{hint}</p> : null}
@@ -35,12 +35,12 @@ function RunRow({ run }: { run: IngestRunSummary }) {
   const failed = run.stores.filter((s) => s.error && s.error !== "disabled");
 
   return (
-    <li className="flex flex-col gap-1 border-b border-zinc-100 px-3 py-2.5 last:border-0 dark:border-zinc-800/60">
+    <li className="flex flex-col gap-1 border-b px-3 py-2.5 last:border-0 border-zinc-800/60">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <Badge tone={run.finished_at ? (failed.length > 0 ? "new" : "available") : "sold-out"}>
           {run.finished_at ? (failed.length > 0 ? `${failed.length} store error(s)` : "ok") : "running"}
         </Badge>
-        <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+        <span className="text-sm font-medium text-zinc-200">
           run #{run.id} · {run.trigger}
         </span>
         <span className="text-xs text-zinc-400">
@@ -51,7 +51,7 @@ function RunRow({ run }: { run: IngestRunSummary }) {
         </span>
       </div>
 
-      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+      <p className="text-xs text-zinc-400">
         {run.stores.filter((s) => !s.error).reduce((sum, s) => sum + s.fetched, 0).toLocaleString()} products fetched ·{" "}
         {run.stores.reduce((sum, s) => sum + s.created, 0)} new ·{" "}
         {run.stores.reduce((sum, s) => sum + s.priceChanges, 0)} price changes ·{" "}
@@ -77,7 +77,7 @@ export default async function StatusPage() {
   return (
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-2xl font-bold tracking-tight text-zinc-50">
           Status
         </h1>
         <p className="text-xs text-zinc-400">
@@ -128,11 +128,11 @@ export default async function StatusPage() {
           {status.events_last_24h.length === 0 ? (
             <p className="text-sm text-zinc-500">No listing events recorded.</p>
           ) : (
-            <ul className="flex flex-col divide-y divide-zinc-100 dark:divide-zinc-800/60">
+            <ul className="flex flex-col divide-y divide-zinc-800/60">
               {status.events_last_24h.map((e) => (
                 <li key={e.type} className="flex items-center justify-between py-1.5 text-sm">
-                  <span className="text-zinc-700 dark:text-zinc-300">{e.type}</span>
-                  <span className="font-semibold text-zinc-900 dark:text-zinc-100">
+                  <span className="text-zinc-300">{e.type}</span>
+                  <span className="font-semibold text-zinc-100">
                     {e.n.toLocaleString()}
                   </span>
                 </li>

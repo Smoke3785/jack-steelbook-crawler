@@ -115,7 +115,7 @@ export default async function EditionPage({
     <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6">
       <div className="grid gap-6 md:grid-cols-[280px_1fr]">
         <div className="mx-auto w-full max-w-[280px]">
-          <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-100 ring-1 ring-zinc-200 dark:bg-zinc-800 dark:ring-zinc-800">
+          <div className="relative aspect-[2/3] w-full overflow-hidden ring-1 bg-zinc-800 ring-zinc-800">
             {edition.image_url ? (
               <Image
                 src={edition.image_url}
@@ -126,7 +126,7 @@ export default async function EditionPage({
                 className="object-cover"
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-4xl font-semibold text-zinc-300 dark:text-zinc-600">
+              <div className="flex h-full items-center justify-center text-4xl font-semibold text-zinc-600">
                 {edition.display_title.slice(0, 2)}
               </div>
             )}
@@ -144,11 +144,11 @@ export default async function EditionPage({
               <Badge>{formatDisplay(edition.format)}</Badge>
             </div>
 
-            <h1 className="mt-2 text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="mt-2 text-2xl font-bold tracking-tight text-zinc-50">
               {edition.display_title}
             </h1>
 
-            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            <p className="mt-1 text-sm text-zinc-400">
               {edition.listing_count} listing{edition.listing_count === 1 ? "" : "s"} across{" "}
               {new Set(liveListings.map((l) => l.store_id)).size} store
               {new Set(liveListings.map((l) => l.store_id)).size === 1 ? "" : "s"} · first
@@ -158,11 +158,11 @@ export default async function EditionPage({
           </div>
 
           {cheapest ? (
-            <div className=" bg-zinc-50 p-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+            <div className="p-4 ring-1 bg-zinc-900 ring-zinc-800">
               <p className="text-xs uppercase tracking-wide text-zinc-400">Cheapest in stock</p>
-              <p className="mt-1 text-lg font-semibold text-zinc-900 dark:text-zinc-50">
+              <p className="mt-1 text-lg font-semibold text-zinc-50">
                 {formatPriceRange(cheapest.price_min_cents, cheapest.price_max_cents)}
-                <span className="ml-2 align-middle text-sm font-normal text-zinc-500 dark:text-zinc-400">
+                <span className="ml-2 align-middle text-sm font-normal text-zinc-400">
                   at {storeName(cheapest.store_id)}
                 </span>
               </p>
@@ -171,20 +171,20 @@ export default async function EditionPage({
                   href={cheapest.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-block text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                  className="mt-2 inline-block text-sm font-medium hover:underline text-blue-400"
                 >
                   View on store ↗
                 </a>
               ) : null}
             </div>
           ) : (
-            <div className=" bg-zinc-50 p-4 text-sm text-zinc-500 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:text-zinc-400 dark:ring-zinc-800">
+            <div className="p-4 text-sm ring-1 bg-zinc-900 text-zinc-400 ring-zinc-800">
               No live listing currently in stock.
             </div>
           )}
 
           {movie ? (
-            <div className="flex gap-4 bg-zinc-50 p-4 ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">
+            <div className="flex gap-4 p-4 ring-1 bg-zinc-900 ring-zinc-800">
               {movie.poster_path ? (
                 <Image
                   src={`${TMDB_IMAGE_BASE}${movie.poster_path}`}
@@ -194,12 +194,12 @@ export default async function EditionPage({
                 />
               ) : null}
               <div className="min-w-0">
-                <p className="font-semibold text-zinc-900 dark:text-zinc-100">
+                <p className="font-semibold text-zinc-100">
                   {movie.title}
                   {movie.release_date ? ` (${movie.release_date.slice(0, 4)})` : ""}
                 </p>
                 {movie.overview ? (
-                  <p className="mt-1 line-clamp-4 text-sm text-zinc-500 dark:text-zinc-400">
+                  <p className="mt-1 line-clamp-4 text-sm text-zinc-400">
                     {movie.overview}
                   </p>
                 ) : null}
@@ -215,15 +215,15 @@ export default async function EditionPage({
       </div>
 
       <section className="mt-8">
-        <h2 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-zinc-100">Listings</h2>
+        <h2 className="mb-3 text-lg font-semibold text-zinc-100">Listings</h2>
 
         {listings.length === 0 ? (
           <p className="text-sm text-zinc-500">No listings recorded.</p>
         ) : (
-          <div className="overflow-x-auto ring-1 ring-zinc-200 dark:ring-zinc-800">
+          <div className="overflow-x-auto ring-1 ring-zinc-800">
             <table className="w-full min-w-[640px] text-sm">
               <thead>
-                <tr className="border-b border-zinc-200 bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-400 dark:border-zinc-800 dark:bg-zinc-900">
+                <tr className="border-b text-left text-xs uppercase tracking-wide text-zinc-400 border-zinc-800 bg-zinc-900">
                   <th className="px-4 py-2.5 font-medium">Store</th>
                   <th className="px-4 py-2.5 font-medium">Price</th>
                   <th className="px-4 py-2.5 font-medium">Stock</th>
@@ -235,21 +235,21 @@ export default async function EditionPage({
                 {listings.map((listing) => (
                   <tr
                     key={`${listing.store_id}-${listing.product_id}`}
-                    className="border-b border-zinc-100 last:border-0 dark:border-zinc-800/60"
+                    className="border-b last:border-0 border-zinc-800/60"
                   >
-                    <td className="px-4 py-3 font-medium text-zinc-800 dark:text-zinc-200">
+                    <td className="px-4 py-3 font-medium text-zinc-200">
                       {listing.store_name}
                       {listing.removed ? (
                         <span className="ml-2 text-xs font-normal text-zinc-400">(delisted)</span>
                       ) : null}
                     </td>
-                    <td className="px-4 py-3 font-medium text-zinc-900 dark:text-zinc-100">
+                    <td className="px-4 py-3 font-medium text-zinc-100">
                       {formatPriceRange(listing.price_min_cents, listing.price_max_cents)}
                     </td>
                     <td className="px-4 py-3">
                       <StockBadge state={listing.stock_state} />
                     </td>
-                    <td className="px-4 py-3 text-zinc-500 dark:text-zinc-400">
+                    <td className="px-4 py-3 text-zinc-400">
                       {timeAgo(listing.last_seen_at)}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -258,7 +258,7 @@ export default async function EditionPage({
                           href={listing.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                          className="text-sm font-medium hover:underline text-blue-400"
                         >
                           View ↗
                         </a>
@@ -274,28 +274,28 @@ export default async function EditionPage({
 
       {events.length > 0 ? (
         <section className="mt-8">
-          <h2 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-zinc-100">
+          <h2 className="mb-3 text-lg font-semibold text-zinc-100">
             History
           </h2>
           <ol className="flex flex-col gap-2">
             {events.map((event) => (
               <li
                 key={event.id}
-                className="flex flex-wrap items-center gap-x-3 gap-y-1 bg-zinc-50 px-4 py-2.5 text-sm ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800"
+                className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-2.5 text-sm ring-1 bg-zinc-900 ring-zinc-800"
               >
-                <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                <span className="font-medium text-zinc-200">
                   {eventLabel(event)}
                 </span>
-                <span className="text-zinc-500 dark:text-zinc-400">
+                <span className="text-zinc-400">
                   {storeName(event.store_id)}
                 </span>
                 {eventDetail(event) ? (
-                  <span className="text-zinc-500 dark:text-zinc-400">{eventDetail(event)}</span>
+                  <span className="text-zinc-400">{eventDetail(event)}</span>
                 ) : null}
                 <span className="ml-auto text-xs text-zinc-400">
                   {formatDateTime(event.seen_at)}
                   {event.ingest_run_id === null ? (
-                    <span className="ml-1.5 text-zinc-300 dark:text-zinc-600">
+                    <span className="ml-1.5 text-zinc-600">
                       (live recheck)
                     </span>
                   ) : null}

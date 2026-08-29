@@ -3,13 +3,13 @@ import type { ReactNode } from "react";
 type Tone = "neutral" | "label" | "available" | "sold-out" | "new";
 
 const TONE_CLASSES: Record<Tone, string> = {
-  neutral: "bg-zinc-100 text-zinc-700 ring-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-700",
-  label: "bg-blue-50 text-blue-700 ring-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:ring-blue-900",
+  neutral: "bg-zinc-800 text-zinc-300 ring-zinc-700",
+  label: "bg-blue-950 text-blue-300 ring-blue-900",
   available:
-    "bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:ring-emerald-900",
+    "bg-emerald-950 text-emerald-300 ring-emerald-900",
   "sold-out":
-    "bg-rose-50 text-rose-700 ring-rose-200 dark:bg-rose-950 dark:text-rose-300 dark:ring-rose-900",
-  new: "bg-amber-50 text-amber-700 ring-amber-200 dark:bg-amber-950 dark:text-amber-300 dark:ring-amber-900",
+    "bg-rose-950 text-rose-300 ring-rose-900",
+  new: "bg-amber-950 text-amber-300 ring-amber-900",
 };
 
 export function Badge({

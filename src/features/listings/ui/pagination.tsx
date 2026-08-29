@@ -39,15 +39,15 @@ export function Pagination({
   }
 
   return (
-    <section className="mt-0 border-t-0 border-zinc-200 dark:border-zinc-800 mx-auto w-full max-w-7xl px-[24px]">
+    <section className="mt-0 border-t-0 border-zinc-800 mx-auto w-full max-w-7xl px-[24px]">
       <nav
         aria-label="Pagination"
-        className="flex  flex-wrap items-center justify-center gap-2 py-[12px] border-x dark:border-zinc-800 "
+        className="flex flex-wrap items-center justify-center gap-2 py-[12px] border-x border-zinc-800"
       >
         {filters.page > 1 ? (
           <Link
             href={browseHref({ page: filters.page - 1 }, filters)}
-            className="h-9 border border-zinc-300 px-3 text-sm leading-8 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="h-9 border border-zinc-700 px-3 text-sm leading-8 text-zinc-300 hover:bg-zinc-800"
           >
             ← Prev
           </Link>
@@ -69,11 +69,7 @@ export function Pagination({
               key={entry}
               href={browseHref({ page: entry }, filters)}
               aria-current={isCurrent ? "page" : undefined}
-              className={`h-9 min-w-9 border px-2.5 text-center text-sm leading-8 ${
-                isCurrent
-                  ? "border-transparent bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
-                  : "border-zinc-300 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-              }`}
+              className={`h-9 min-w-9 border px-2.5 text-center text-sm leading-8 ${isCurrent ? "border-transparent bg-zinc-100 text-zinc-900" : "border-zinc-700 text-zinc-300 hover:bg-zinc-800"}`}
             >
               {entry}
             </Link>
@@ -83,7 +79,7 @@ export function Pagination({
         {filters.page < pageCount ? (
           <Link
             href={browseHref({ page: filters.page + 1 }, filters)}
-            className="h-9 border border-zinc-300 px-3 text-sm leading-8 text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="h-9 border border-zinc-700 px-3 text-sm leading-8 text-zinc-300 hover:bg-zinc-800"
           >
             Next →
           </Link>

@@ -21,12 +21,12 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
   return (
     <Link
       href={`/editions/${edition.slug}`}
-      className="group flex flex-col border-b border-r border-zinc-200 p-[6px] transition-shadow hover:shadow-md dark:border-zinc-800"
+      className="group flex flex-col border-b border-r p-[6px] transition-shadow hover:shadow-md border-zinc-800"
     >
       {/* Background block sits on an inner container so the card's 6px mat
           shows the page background between border and content. */}
-      <div className="flex flex-1 flex-col bg-white  dark:bg-zinc-900">
-        <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+      <div className="flex flex-1 flex-col bg-zinc-900 p-[6px]">
+        <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-800">
           {edition.image_url ? (
             <Image
               src={edition.image_url}
@@ -36,7 +36,7 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
               className="object-cover transition-transform group-hover:scale-[1.03]"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-3xl font-semibold text-zinc-300 dark:text-zinc-600">
+            <div className="flex h-full items-center justify-center text-3xl font-semibold text-zinc-600">
               {edition.display_title.slice(0, 2)}
             </div>
           )}
@@ -51,12 +51,12 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-2 pt-2">
+        <div className="flex flex-1 flex-col gap-2 pt-2 ">
           <div>
-            <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-zinc-900 dark:text-zinc-100">
+            <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-zinc-100">
               {edition.display_title}
             </h3>
-            <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="mt-0.5 text-xs text-zinc-400">
               {[
                 edition.label ? labelName(edition.label) : null,
                 edition.movie_year,
@@ -77,7 +77,7 @@ export function EditionCard({ edition }: { edition: BrowseItem }) {
             </div>
 
             <div className="flex items-center justify-between gap-2">
-              <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+              <span className="text-sm font-semibold text-zinc-100">
                 {formatPriceRange(
                   edition.price_min_cents,
                   edition.price_max_cents,
