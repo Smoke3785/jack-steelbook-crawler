@@ -32,8 +32,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col">
         <header className="sticky top-0 z-20 border-b border-zinc-800 bg-background">
           <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6 ">
-            <Link href="/" className="flex items-baseline gap-2">
-              <span className="text-lg font-semibold tracking-tight text-zinc-50">
+            <Link href="/" className="flex items-baseline gap-[0] flex-col">
+              <span className="text-lg font-semibold tracking-tight text-zinc-50 leading-tight">
                 Steelbook Search
               </span>
               <span className="hidden text-xs text-zinc-400 sm:inline">
