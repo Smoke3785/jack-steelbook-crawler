@@ -21,6 +21,8 @@ export interface EditionEvent {
   type: string;
   detail: string | null;
   seen_at: string;
+  /** Null when the event came from an edition-page live recheck. */
+  ingest_run_id: number | null;
 }
 
 export interface EditionDetail {
@@ -66,7 +68,7 @@ export async function getEditionDetail(slug: string): Promise<EditionDetail | nu
 
   const events = db
     .prepare(
-      `SELECT le.id, le.store_id, le.type, le.detail, le.seen_at
+      `SELECT le.id, le.store_id, le.type, le.detail, le.seen_at, le.ingest_run_id
        FROM listing_events le
        JOIN parsed_listings p ON p.store_id = le.store_id AND p.product_id = le.product_id
        WHERE p.edition_id = ?

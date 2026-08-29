@@ -10,7 +10,10 @@ import type { BrowseItem } from "../queries";
 const NEW_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
 
 function isNew(firstSeenAt: string): boolean {
-  return Date.now() - new Date(`${firstSeenAt.replace(" ", "T")}Z`).getTime() < NEW_WINDOW_MS;
+  return (
+    Date.now() - new Date(`${firstSeenAt.replace(" ", "T")}Z`).getTime() <
+    NEW_WINDOW_MS
+  );
 }
 
 /** Compact one-line-per-edition row for the list view. */
@@ -53,16 +56,23 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
 
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-zinc-500 dark:text-zinc-400">
           {edition.label ? <span>{labelName(edition.label)}</span> : null}
-          {edition.variant ? <span>{edition.variant.replaceAll("-", " ")}</span> : null}
+          {edition.variant ? (
+            <span>{edition.variant.replaceAll("-", " ")}</span>
+          ) : null}
           <span>{formatDisplay(edition.format)}</span>
           {edition.movie_year ? <span>({edition.movie_year})</span> : null}
           <span className="hidden sm:inline">
-            · seen {formatDate(edition.first_seen_at)}
-            {edition.last_changed_at ? ` · updated ${formatDate(edition.last_changed_at)}` : ""}
+            · First seen {formatDate(edition.first_seen_at)}
+            {edition.last_changed_at
+              ? ` · Updated ${formatDate(edition.last_changed_at)}`
+              : ""}
           </span>
         </div>
 
-        <p className="truncate text-[11px] text-zinc-400" title={storeNames(edition.store_ids)}>
+        <p
+          className="truncate text-[11px] text-zinc-400"
+          title={storeNames(edition.store_ids)}
+        >
           {storeNames(edition.store_ids)}
         </p>
       </div>
@@ -72,7 +82,9 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
           {formatPriceRange(edition.price_min_cents, edition.price_max_cents)}
         </span>
         <Badge tone={anyAvailable ? "available" : "sold-out"}>
-          {anyAvailable ? `${edition.available_count}/${edition.listing_count}` : "Sold out"}
+          {anyAvailable
+            ? `${edition.available_count}/${edition.listing_count}`
+            : "Sold out"}
         </Badge>
       </div>
     </Link>

@@ -33,6 +33,16 @@ export function formatDate(iso: string): string {
   });
 }
 
+export function formatDateTime(iso: string): string {
+  return new Date(`${iso.replace(" ", "T")}Z`).toLocaleString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  });
+}
+
 export function timeAgo(iso: string): string {
   const then = new Date(`${iso.replace(" ", "T")}Z`).getTime();
   const seconds = Math.max(1, Math.floor((Date.now() - then) / 1000));

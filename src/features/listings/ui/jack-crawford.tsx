@@ -7,6 +7,16 @@ import Image from "next/image";
 
 const META_LINE = "The collector himself";
 
+/** True when the search query would surface Jack as a result (e.g. "jack", "crawford", "jac"). */
+export function matchesJackCrawfordQuery(q: string): boolean {
+  const tokens = q.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const names = ["jack", "crawford"];
+
+  return tokens.some((token) =>
+    names.some((name) => token.startsWith(name) || name.startsWith(token)),
+  );
+}
+
 export function JackCrawfordCard() {
   return (
     <div className="flex flex-col overflow-hidden rounded-xl bg-white ring-1 ring-zinc-200 dark:bg-zinc-900 dark:ring-zinc-800">

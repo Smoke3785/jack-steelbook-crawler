@@ -5,7 +5,7 @@ import { getEditionDetail } from "@/features/editions/queries";
 import { scheduleEditionRecheck } from "@/features/editions/recheck";
 import { Badge } from "@/shared/ui/badge";
 import { storeName } from "@/shared/lib/stores";
-import { formatDate, formatPriceRange, timeAgo } from "@/shared/lib/format";
+import { formatDate, formatDateTime, formatPriceRange, timeAgo } from "@/shared/lib/format";
 import { labelName } from "@/features/parse/labels";
 import { formatDisplay } from "@/features/parse/format";
 import type { EditionEvent } from "@/features/editions/queries";
@@ -268,7 +268,12 @@ export default async function EditionPage({ params }: PageProps<"/[slug]">) {
                   <span className="text-zinc-500 dark:text-zinc-400">{eventDetail(event)}</span>
                 ) : null}
                 <span className="ml-auto text-xs text-zinc-400">
-                  {timeAgo(event.seen_at)}
+                  {formatDateTime(event.seen_at)}
+                  {event.ingest_run_id === null ? (
+                    <span className="ml-1.5 text-zinc-300 dark:text-zinc-600">
+                      (live recheck)
+                    </span>
+                  ) : null}
                 </span>
               </li>
             ))}

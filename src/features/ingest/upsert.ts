@@ -77,6 +77,28 @@ function recordEvent(
   ).run(runId, storeId, productId, type, detail ? JSON.stringify(detail) : null);
 }
 
+const FLIP_DAMP_MINUTES = 15;
+
+/** True when this listing flipped availability very recently (CDN noise window). */
+function lastFlipWasRecent(db: DB, storeId: string, productId: number): boolean {
+  const lastFlip = db
+    .prepare(
+      `SELECT seen_at FROM listing_events
+       WHERE store_id = ? AND product_id = ? AND type IN ('available', 'unavailable')
+       ORDER BY seen_at DESC, id DESC LIMIT 1`,
+    )
+    .get(storeId, productId) as { seen_at: string } | undefined;
+
+  if (!lastFlip) {
+    return false;
+  }
+
+  const flipTime = new Date(`${lastFlip.seen_at.replace(" ", "T")}Z`).getTime();
+  const ageMinutes = (Date.now() - flipTime) / 60_000;
+
+  return ageMinutes < FLIP_DAMP_MINUTES;
+}
+
 /**
  * Writes one product snapshot to raw_listings (keyed store_id + product_id)
  * and records diff events: new ID, price change, availability flip. Shared by
@@ -138,9 +160,20 @@ export function applyProduct(
 
   const priceChanged =
     existing.price_min_cents !== min || existing.price_max_cents !== max;
-  const availabilityFlipped = existing.available !== available;
   const retitled = existing.title !== product.title || existing.vendor !== product.vendor;
   const resurrected = existing.removed_at !== null;
+
+  // Availability hysteresis: Shopify's collection feed and single-product
+  // endpoint are cached independently and can disagree within seconds. A flip
+  // arriving shortly after the previous flip is treated as CDN noise — the
+  // prior state stands until a change survives the damp window.
+  let listingAvailable = available;
+  let availabilityFlipped = existing.available !== available;
+
+  if (availabilityFlipped && lastFlipWasRecent(db, store.id, product.id)) {
+    listingAvailable = existing.available;
+    availabilityFlipped = false;
+  }
 
   if (priceChanged) {
     recordEvent(db, runId, store.id, product.id, "price_change", {
@@ -155,8 +188,8 @@ export function applyProduct(
       runId,
       store.id,
       product.id,
-      available === 1 ? "available" : "unavailable",
-      { before: existing.available === 1, after: available === 1 },
+      listingAvailable === 1 ? "available" : "unavailable",
+      { before: existing.available === 1, after: listingAvailable === 1 },
     );
   }
 
@@ -181,7 +214,7 @@ export function applyProduct(
     JSON.stringify(product),
     min,
     max,
-    available,
+    listingAvailable,
     anyChange ? 1 : 0,
     store.id,
     product.id,
