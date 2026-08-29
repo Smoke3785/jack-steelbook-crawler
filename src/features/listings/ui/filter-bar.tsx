@@ -70,7 +70,7 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center gap-2">
         <form
-          className="h-9 w-full min-w-52 flex-1"
+          className="relative h-9 w-full min-w-52 flex-1"
           onSubmit={(e) => {
             e.preventDefault();
             commitQuery(q);
@@ -80,15 +80,25 @@ export function FilterBar({ filters, facets }: FilterBarProps) {
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            {...{
-              // React dispatches the native `search` event (✕ clear, Enter)
-              // but its input types don't expose onSearch — hence the spread.
-              onSearch: (event: React.FormEvent<HTMLInputElement>) =>
-                commitQuery(event.currentTarget.value),
-            }}
             placeholder="Search title, catalog no., movie — press Enter"
-            className="h-9 w-full bg-zinc-100 px-3 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
+            className="h-9 w-full bg-zinc-100 px-3 pr-8 text-sm text-zinc-800 placeholder:text-zinc-400 outline-none ring-1 ring-inset ring-zinc-200 focus:ring-2 focus:ring-zinc-400 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700 dark:focus:ring-zinc-500"
           />
+
+          {q !== "" ? (
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => {
+                setQ("");
+                commitQuery("");
+              }}
+              className="absolute right-2 top-1/2 flex size-5 -translate-y-1/2 items-center justify-center text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+            >
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path d="M1 1l8 8M9 1l-8 8" />
+              </svg>
+            </button>
+          ) : null}
         </form>
 
         <select

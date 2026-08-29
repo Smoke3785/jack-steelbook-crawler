@@ -23,25 +23,26 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
   return (
     <Link
       href={`/${edition.slug}`}
-      className="flex items-center gap-3 bg-white p-2.5 ring-1 ring-zinc-200 transition-shadow hover:shadow-md dark:bg-zinc-900 dark:ring-zinc-800"
+      className="flex items-center border-b border-r border-zinc-200 p-[6px] transition-shadow hover:shadow-md dark:border-zinc-800"
     >
-      <div className="relative h-[72px] w-12 shrink-0 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-        {edition.image_url ? (
-          <Image
-            src={edition.image_url}
-            alt={edition.display_title}
-            fill
-            sizes="48px"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full items-center justify-center text-xs font-semibold text-zinc-300 dark:text-zinc-600">
-            {edition.display_title.slice(0, 2)}
-          </div>
-        )}
-      </div>
+      <div className="flex min-w-0 flex-1 items-center gap-3 bg-white p-[6px] dark:bg-zinc-900">
+        <div className="relative h-[72px] w-12 shrink-0 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+          {edition.image_url ? (
+            <Image
+              src={edition.image_url}
+              alt={edition.display_title}
+              fill
+              sizes="48px"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-xs font-semibold text-zinc-300 dark:text-zinc-600">
+              {edition.display_title.slice(0, 2)}
+            </div>
+          )}
+        </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
         <div className="flex min-w-0 items-baseline gap-2">
           <span className="truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             {edition.display_title}
@@ -78,14 +79,15 @@ export function EditionRow({ edition }: { edition: BrowseItem }) {
       </div>
 
       <div className="flex w-24 shrink-0 flex-col items-end gap-1">
-        <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-          {formatPriceRange(edition.price_min_cents, edition.price_max_cents)}
-        </span>
-        <Badge tone={anyAvailable ? "available" : "sold-out"}>
-          {anyAvailable
-            ? `${edition.available_count}/${edition.listing_count}`
-            : "Sold out"}
-        </Badge>
+          <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+            {formatPriceRange(edition.price_min_cents, edition.price_max_cents)}
+          </span>
+          <Badge tone={anyAvailable ? "available" : "sold-out"}>
+            {anyAvailable
+              ? `${edition.available_count}/${edition.listing_count}`
+              : "Sold out"}
+          </Badge>
+        </div>
       </div>
     </Link>
   );

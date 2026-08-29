@@ -41,14 +41,14 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
           </p>
         </div>
       ) : filters.view === "list" ? (
-        <div className="flex flex-col">
+        <div className="flex flex-col border-l border-t border-zinc-200 dark:border-zinc-800">
           {showJack ? <JackCrawfordRow /> : null}
           {result.items.map((edition) => (
             <EditionRow key={edition.id} edition={edition} />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-2 border-l border-t border-zinc-200 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 dark:border-zinc-800">
           {showJack ? <JackCrawfordCard /> : null}
           {result.items.map((edition) => (
             <EditionCard key={edition.id} edition={edition} />
