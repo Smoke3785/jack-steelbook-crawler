@@ -7,6 +7,7 @@ import {
   JackCrawfordCard,
   JackCrawfordRow,
 } from "@/features/listings/ui/jack-crawford";
+import { LastRowWrap } from "@/shared/ui/last-row-wrap";
 
 // Utils
 import { matchesJackCrawfordQuery } from "@/features/listings/ui/jack-crawford";
@@ -40,38 +41,38 @@ export default async function HomePage({ searchParams }: PageProps<"/">) {
         <FilterBar filters={filters} facets={result.facets} />
 
         <div className="py-4 border border-y-0 border-zinc-800 px-[18px] pb-[12px] pt-[6px] flex items-baseline justify-between">
-          <p className="text-sm text-zinc-400">
-            {editionsString}
-          </p>
+          <p className="text-sm text-zinc-400">{editionsString}</p>
         </div>
 
-        {resultsLength === 0 && (
-          <div className="border border-dashed border-zinc-700 p-12 text-center">
-            <p className="text-sm text-zinc-400">
-              {result.total === 0 && !filters.q
-                ? "No editions indexed yet — run `npm run ingest` to pull the store feeds."
-                : "No editions match these filters."}
-            </p>
-          </div>
-        )}
+        <div id="results-container">
+          {resultsLength === 0 && (
+            <div className="border border-dashed border-zinc-700 p-12 text-center">
+              <p className="text-sm text-zinc-400">
+                {result.total === 0 && !filters.q
+                  ? "No editions indexed yet — run `npm run ingest` to pull the store feeds."
+                  : "No editions match these filters."}
+              </p>
+            </div>
+          )}
 
-        {filters.view === "list" && (
-          <div className="flex flex-col border-l border-t border-zinc-800">
-            {showJack && <JackCrawfordRow />}
-            {result.items.map((edition) => (
-              <EditionRow key={edition.id} edition={edition} />
-            ))}
-          </div>
-        )}
+          {filters.view === "list" && (
+            <div className="flex flex-col border-l border-t border-zinc-800">
+              {showJack && <JackCrawfordRow />}
+              {result.items.map((edition) => (
+                <EditionRow key={edition.id} edition={edition} />
+              ))}
+            </div>
+          )}
 
-        {filters.view === "grid" && (
-          <div className="grid grid-cols-2 border-l border-t sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 border-zinc-800">
-            {showJack && <JackCrawfordCard />}
-            {result.items.map((edition) => (
-              <EditionCard key={edition.id} edition={edition} />
-            ))}
-          </div>
-        )}
+          {filters.view === "grid" && (
+            <LastRowWrap className="grid grid-cols-2 border-l border-t sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 border-zinc-800">
+              {showJack && <JackCrawfordCard />}
+              {result.items.map((edition) => (
+                <EditionCard key={edition.id} edition={edition} />
+              ))}
+            </LastRowWrap>
+          )}
+        </div>
       </main>
 
       <Pagination filters={filters} pageCount={result.pageCount} />

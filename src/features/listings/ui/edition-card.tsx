@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/shared/ui/badge";
@@ -20,8 +22,8 @@ function isNew(firstSeenAt: string): boolean {
 export function EditionCard({ edition }: { edition: BrowseItem }) {
   return (
     <Link
-      href={`/editions/${edition.slug}`}
       className="group flex flex-col border-b border-r p-[6px] transition-shadow hover:shadow-md border-zinc-800"
+      href={`/editions/${edition.slug}`}
     >
       {/* Background block sits on an inner container so the card's 6px mat
           shows the page background between border and content. */}

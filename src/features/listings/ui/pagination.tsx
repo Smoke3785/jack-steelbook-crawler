@@ -28,8 +28,8 @@ function pageWindow(current: number, pageCount: number): (number | "gap")[] {
 }
 
 export function Pagination({
-  filters,
   pageCount,
+  filters,
 }: {
   filters: ListingFilters;
   pageCount: number;
@@ -39,15 +39,15 @@ export function Pagination({
   }
 
   return (
-    <section className="mt-0 border-t-0 border-zinc-800 mx-auto w-full max-w-7xl px-[24px]">
+    <section className="mt-0 border-t-0 border-zinc-800 mx-auto w-full max-w-7xl px-[16px] sm:px-[24px]">
       <nav
+        className="flex flex-wrap items-center justify-center gap-2 py-[12px] border-x border-zinc-800 sm:px-[12px] border-t"
         aria-label="Pagination"
-        className="flex flex-wrap items-center justify-center gap-2 py-[12px] border-x border-zinc-800"
       >
         {filters.page > 1 ? (
           <Link
-            href={browseHref({ page: filters.page - 1 }, filters)}
             className="h-9 border border-zinc-700 px-3 text-sm leading-8 text-zinc-300 hover:bg-zinc-800"
+            href={browseHref({ page: filters.page - 1 }, filters)}
           >
             ← Prev
           </Link>
