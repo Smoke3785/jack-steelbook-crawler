@@ -39,6 +39,6 @@ input[type="search"]::-webkit-search-decoration {
 
 /* Selects the last result in a row, with respect to flex-wrap behavior.
    The hook puts the class on each anchor in the final wrapped row. */
-#results-container *:is(a.last-row-selector, .jackCrawfordCard) {
+#results-container .last-row-selector {
   border-bottom: 0px !important;
 }
