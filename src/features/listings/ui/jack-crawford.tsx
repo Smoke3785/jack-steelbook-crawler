@@ -9,7 +9,10 @@ const META_LINE = "The collector himself";
 
 /** True when the search query would surface Jack as a result (e.g. "jack", "crawford", "jac"). */
 export function matchesJackCrawfordQuery(q: string): boolean {
-  const tokens = q.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const tokens = q
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean);
   const names = ["jack", "crawford"];
 
   return tokens.some((token) =>
@@ -19,7 +22,7 @@ export function matchesJackCrawfordQuery(q: string): boolean {
 
 export function JackCrawfordCard() {
   return (
-    <div className="flex flex-col border-b border-r p-[6px] border-zinc-800">
+    <div className="flex flex-col border-b border-r p-[6px] border-zinc-800 jackCrawfordCard">
       <div className="flex flex-1 flex-col p-[6px] bg-zinc-900">
         <div className="relative aspect-[2/3] w-full overflow-hidden bg-zinc-800">
           <Image
